@@ -1,0 +1,37 @@
+name: Audit tests
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  audit-tests:
+    runs-on: ubuntu-latest
+    services:
+      neo4j:
+        image: neo4j:5.26-community
+        env:
+          NEO4J_AUTH: neo4j/synthetic-ci-password
+          NEO4J_dbms_usage__report_enabled: "false"
+        ports:
+          - 7687:7687
+        options: >-
+          --health-cmd "cypher-shell -u neo4j -p synthetic-ci-password 'RETURN 1'"
+          --health-interval 5s
+          --health-timeout 8s
+          --health-retries 24
+          --health-start-period 15s
+    env:
+      AMACFA_TEST_NEO4J_URI: bolt://127.0.0.1:7687
+      AMACFA_TEST_NEO4J_PASSWORD: synthetic-ci-password
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: python -m pip install -r requirements-dev.txt -r requirements-integrations.txt
+      - run: python -m ruff check .
+      - run: python -m ruff format --check .
+      - run: python -m pytest
+      - run: python -m scripts.evaluate
