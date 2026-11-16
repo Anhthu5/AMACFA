@@ -1,0 +1,12 @@
+{
+  "version": "AP-DEMO-1.0",
+  "split_window_days": 7,
+  "approval_thresholds": {"USD": "10000", "EUR": "9000", "VND": "250000000"},
+  "controls": [
+    {"id": "AP-01", "title": "Ngăn thanh toán trùng", "rule": "DUPLICATE_INVOICE", "severity": "high", "clause": "Kiểm tra số hóa đơn đã được ghi nhận theo mã nhà cung cấp trước khi thanh toán.", "action": "Đối chiếu PO, hóa đơn gốc và lịch sử thanh toán của các dòng được dẫn."},
+    {"id": "AP-02", "title": "Phê duyệt theo hạn mức", "rule": "MISSING_APPROVAL", "severity": "high", "clause": "Hóa đơn đạt hoặc vượt hạn mức theo tiền tệ phải có người phê duyệt được ghi nhận.", "action": "Kiểm tra hồ sơ phê duyệt và xác nhận thẩm quyền theo ma trận phân quyền."},
+    {"id": "AP-03", "title": "Phân tách nhiệm vụ", "rule": "SELF_APPROVAL", "severity": "high", "clause": "Người đề nghị và người phê duyệt thanh toán phải là hai người khác nhau.", "action": "Đối chiếu nhật ký quyền truy cập và yêu cầu phê duyệt độc lập."},
+    {"id": "AP-04", "title": "Kiểm soát cộng gộp giao dịch", "rule": "POTENTIAL_SPLIT", "severity": "medium", "clause": "Rà soát các giao dịch dưới hạn mức của cùng nhà cung cấp và người đề nghị trong cửa sổ chính sách, theo từng tiền tệ.", "action": "Đối chiếu hợp đồng, PO, thời điểm giao hàng và mục đích mua sắm của cả nhóm hóa đơn."},
+    {"id": "AP-05", "title": "Xác minh tài khoản nhận tiền", "rule": "SHARED_ACCOUNT", "severity": "high", "clause": "Một tài khoản nhận tiền được dùng chung bởi nhiều mã nhà cung cấp cần được xác minh độc lập.", "action": "Đối chiếu hồ sơ nhà cung cấp và xác minh tài khoản qua đầu mối đã đăng ký."}
+  ]
+}

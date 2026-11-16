@@ -1,0 +1,4 @@
+vendor_id,invoice_number,issued_on,amount,currency,requested_by,approved_by,account_token
+LOTUS,INV-610,2026-09-14,250000000,VND,BUYER-7,FIN-3,BANK-E
+LOTUS,INV-611,2026-09-15,1200000,VND,BUYER-7,FIN-3,BANK-E
+ATLAS,INV-710,2026-09-15,800,EUR,BUYER-8,FIN-3,BANK-F

@@ -1,0 +1,10 @@
+{
+  "invoices_mixed.csv": [
+    {"rule": "DUPLICATE_INVOICE", "lines": [2, 3], "control": "AP-01"},
+    {"rule": "MISSING_APPROVAL", "lines": [4], "control": "AP-02"},
+    {"rule": "SELF_APPROVAL", "lines": [5], "control": "AP-03"},
+    {"rule": "POTENTIAL_SPLIT", "lines": [6, 7], "control": "AP-04"},
+    {"rule": "SHARED_ACCOUNT", "lines": [8, 9], "control": "AP-05"}
+  ],
+  "invoices_clean.csv": []
+}

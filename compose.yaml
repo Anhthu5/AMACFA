@@ -1,0 +1,39 @@
+services:
+  auditor:
+    build: .
+    env_file: .env
+    environment:
+      AMACFA_STATE_DIR: /var/lib/amacfa
+      AMACFA_VECTOR_BACKEND: chroma
+      AMACFA_GRAPH_BACKEND: neo4j
+      AMACFA_NEO4J_URI: bolt://neo4j:7687
+      AMACFA_NEO4J_USER: neo4j
+      AMACFA_NEO4J_PASSWORD: ${NEO4J_DEMO_PASSWORD:-amacfa-graph-demo-only}
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - audit_state:/var/lib/amacfa
+    depends_on:
+      neo4j:
+        condition: service_healthy
+
+  neo4j:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_DEMO_PASSWORD:-amacfa-graph-demo-only}
+      NEO4J_dbms_usage__report_enabled: "false"
+    volumes:
+      - neo4j_state:/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          cypher-shell -u neo4j -p "$${NEO4J_AUTH#*/}" 'RETURN 1' >/dev/null
+      interval: 5s
+      timeout: 8s
+      retries: 24
+      start_period: 15s
+
+volumes:
+  audit_state:
+  neo4j_state:
